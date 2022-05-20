@@ -17,16 +17,16 @@ commands:
             aws s3 rm s3://udapeople-<<parameters.workflow_id>> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<<parameters.workflow_id>>
 
-    # install_awscli :
-    #   description: Install aws cli v2
-    #   steps:
-    #     - run : 
-    #         name : install aws cli v2 
-    #         command : 
-    #           curl -k -L -s --compressed "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
-    #            -o "awscliv2.zip"
-    #           unzip awscliv2.zip
-    #           sudo ./aws/install
+    install_awscli :
+      description: Install aws cli v2
+      steps:
+        - run : 
+            name : install aws cli v2 
+            command : |
+              curl -k -L -s --compressed "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
+               -o "awscliv2.zip"
+              unzip awscliv2.zip
+              sudo ./aws/install
 
     install_ansible: 
       description : install ansible v2
@@ -217,6 +217,7 @@ jobs:
       - destroy-environment 
       # Here's where you will add some code to rollback on failure      
 
+
   configure-infrastructure:
     docker: 
        - image : cimg/base:stable 
@@ -236,22 +237,22 @@ jobs:
             ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environment 
 
-#   run-migrations:
-#     docker:
-#       # Docker image here that supports NodeJS
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Run migrations
-#           command: |
-#             # Your code here
-#             exit 1
-#       - run:
-#           name: Send migration results to memstash
-#           command: |
-#             # Your code here
-#             exit 1
-#      # Here's where you will add some code to rollback on failure      
+  run-migrations:
+    docker:
+      - image : cimg/node:13.8.0
+    steps:
+      # Checkout code from git
+      - run:
+          name: Run migrations
+          command: |
+            # Your code here
+            exit 1
+      - run:
+          name: Send migration results to memstash
+          command: |
+            # Your code here
+            exit 1
+     # Here's where you will add some code to rollback on failure      
 
 #   deploy-frontend:
 #     docker:
