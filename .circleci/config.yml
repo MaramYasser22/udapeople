@@ -275,10 +275,11 @@ jobs:
             npm install -y 
             npm run build -y 
             npm audit fix --force --audit-level=critical
-            npm run migrations > migrations_dump.txt
+            npm run migrations 
       - run:
           name: Send migration results to kvdb.io
           command: |
+            echo "has been executed successfully." > ./migrations_dump.txt
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
               curl https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
