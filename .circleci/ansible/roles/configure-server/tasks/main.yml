@@ -6,7 +6,7 @@
 - name : "install node js"
   become : true
   apt : 
-    name : ["node.js"]
+    name : ["nodejs"]
     state : latest 
     update_cashe : yes  
 
